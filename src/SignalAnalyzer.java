@@ -27,7 +27,7 @@ public class SignalAnalyzer extends VBox {
         setStyle("-fx-background-color: #1a1a1a;");
 
         // Título principal
-        Label titleLabel = new Label("Analizador de Seniales");
+        Label titleLabel = new Label("Analizador de señales");
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         titleLabel.setTextFill(Color.WHITE);
         titleLabel.setPadding(new Insets(0, 0, 10, 0));
@@ -46,7 +46,7 @@ public class SignalAnalyzer extends VBox {
         configureTextField(durationField);
         configureTextField(harmonicsField);
 
-        Label lblSignal = styledLabel("Senial:");
+        Label lblSignal = styledLabel("señal:");
         Label lblAmplitude = styledLabel("Amplitud:");
         Label lblFrequency = styledLabel("Frecuencia (Hz):");
         Label lblPhase = styledLabel("Fase (rad):");
@@ -103,7 +103,7 @@ public class SignalAnalyzer extends VBox {
         yAxis1.setLabel("Amplitud");
 
         timeChart = new LineChart<>(xAxis1, yAxis1);
-        timeChart.setTitle("Señal en el tiempo");
+        timeChart.setTitle("señal en el tiempo");
         timeChart.setCreateSymbols(false);
         timeChart.setLegendVisible(false);
         // Fondo muy oscuro para gráfico
