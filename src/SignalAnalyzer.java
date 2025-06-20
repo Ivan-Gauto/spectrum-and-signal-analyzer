@@ -27,7 +27,7 @@ public class SignalAnalyzer extends VBox {
         setStyle("-fx-background-color: #1a1a1a;");
 
         // Título principal
-        Label titleLabel = new Label("Analizador de Señales");
+        Label titleLabel = new Label("Analizador de Seniales");
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
         titleLabel.setTextFill(Color.WHITE);
         titleLabel.setPadding(new Insets(0, 0, 10, 0));
@@ -46,12 +46,12 @@ public class SignalAnalyzer extends VBox {
         configureTextField(durationField);
         configureTextField(harmonicsField);
 
-        Label lblSignal = styledLabel("Señal:");
+        Label lblSignal = styledLabel("Senial:");
         Label lblAmplitude = styledLabel("Amplitud:");
         Label lblFrequency = styledLabel("Frecuencia (Hz):");
         Label lblPhase = styledLabel("Fase (rad):");
-        Label lblDuration = styledLabel("Duración (seg):");
-        Label lblHarmonics = styledLabel("Armónicos:");
+        Label lblDuration = styledLabel("Duracion (seg):");
+        Label lblHarmonics = styledLabel("Armonicos:");
 
         GridPane inputsGrid = new GridPane();
         inputsGrid.setHgap(15);
@@ -89,7 +89,7 @@ public class SignalAnalyzer extends VBox {
             lblHarmonics.setVisible(showHarmonics);
         });
 
-        Button plotButton = new Button("Graficar Señal");
+        Button plotButton = new Button("Graficar");
         plotButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
         plotButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white;");
         plotButton.setOnMouseEntered(e -> plotButton.setStyle("-fx-background-color: #777777; -fx-text-fill: white;"));
