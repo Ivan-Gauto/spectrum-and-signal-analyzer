@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "java",
+        "name": "AnalizadorSenal (JavaFX)",
+        "request": "launch",
+        "mainClass": "Main",
+        "vmArgs": "--module-path=\"D:/Programacion Ivan/spectrum-and-signal-analyzer/javafx-sdk-21.0.7/lib\" --add-modules=javafx.controls,javafx.fxml"
+      }
+    ]
+  }
+  
