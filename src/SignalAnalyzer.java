@@ -23,7 +23,8 @@ public class SignalAnalyzer extends VBox {
     public SignalAnalyzer() {
         setSpacing(15);
         setPadding(new Insets(15));
-        setStyle("-fx-background-color: linear-gradient(to bottom, #2c3e50, #4ca1af);");
+        // Fondo general oscuro gris muy oscuro
+        setStyle("-fx-background-color: #1a1a1a;");
 
         // Título principal
         Label titleLabel = new Label("Analizador de Señales");
@@ -56,7 +57,8 @@ public class SignalAnalyzer extends VBox {
         inputsGrid.setHgap(15);
         inputsGrid.setVgap(10);
         inputsGrid.setPadding(new Insets(10));
-        inputsGrid.setStyle("-fx-background-color: rgba(255,255,255,0.15); -fx-background-radius: 10;");
+        // Fondo gris oscuro para la sección inputs
+        inputsGrid.setStyle("-fx-background-color: #333333; -fx-background-radius: 10;");
 
         inputsGrid.add(lblSignal, 0, 0);
         inputsGrid.add(signalTypeBox, 1, 0);
@@ -76,7 +78,6 @@ public class SignalAnalyzer extends VBox {
         inputsGrid.add(lblHarmonics, 2, 2);
         inputsGrid.add(harmonicsField, 3, 2);
 
-        // Inicialmente ocultar campo armónicos y su etiqueta
         harmonicsField.setDisable(true);
         harmonicsField.setVisible(false);
         lblHarmonics.setVisible(false);
@@ -90,12 +91,12 @@ public class SignalAnalyzer extends VBox {
 
         Button plotButton = new Button("Graficar Señal");
         plotButton.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        plotButton.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;");
-        plotButton.setOnMouseEntered(e -> plotButton.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white;"));
-        plotButton.setOnMouseExited(e -> plotButton.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white;"));
+        plotButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white;");
+        plotButton.setOnMouseEntered(e -> plotButton.setStyle("-fx-background-color: #777777; -fx-text-fill: white;"));
+        plotButton.setOnMouseExited(e -> plotButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white;"));
         plotButton.setOnAction(e -> plotSignal());
 
-        // Crear ejes para tiempo
+        // Ejes y gráficos para tiempo
         NumberAxis xAxis1 = new NumberAxis();
         NumberAxis yAxis1 = new NumberAxis();
         xAxis1.setLabel("Tiempo (s)");
@@ -105,9 +106,10 @@ public class SignalAnalyzer extends VBox {
         timeChart.setTitle("Señal en el tiempo");
         timeChart.setCreateSymbols(false);
         timeChart.setLegendVisible(false);
-        timeChart.setStyle("-fx-background-color: #34495e;");
+        // Fondo muy oscuro para gráfico
+        timeChart.setStyle("-fx-background-color: #222222;");
 
-        // Crear ejes para frecuencia
+        // Ejes y gráficos para frecuencia
         NumberAxis xAxis2 = new NumberAxis();
         NumberAxis yAxis2 = new NumberAxis();
         xAxis2.setLabel("Frecuencia (Hz)");
@@ -117,21 +119,24 @@ public class SignalAnalyzer extends VBox {
         frequencyChart.setTitle("Espectro de Frecuencia");
         frequencyChart.setCreateSymbols(false);
         frequencyChart.setLegendVisible(false);
-        frequencyChart.setStyle("-fx-background-color: #34495e;");
+        frequencyChart.setStyle("-fx-background-color: #222222;");
 
         enableZoom(timeChart);
         enableZoom(frequencyChart);
 
-        // Aplicar estilo a etiquetas de ejes y ticks cuando la escena esté lista
+        // Aplicar estilo blanco a títulos y etiquetas cuando se agregue escena
         timeChart.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 applyWhiteStyleToAxisLabels(xAxis1, yAxis1);
+                // Título del chart en blanco
+                timeChart.lookup(".chart-title").setStyle("-fx-text-fill: white;");
             }
         });
 
         frequencyChart.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 applyWhiteStyleToAxisLabels(xAxis2, yAxis2);
+                frequencyChart.lookup(".chart-title").setStyle("-fx-text-fill: white;");
             }
         });
 
@@ -141,12 +146,10 @@ public class SignalAnalyzer extends VBox {
     }
 
     private void applyWhiteStyleToAxisLabels(NumberAxis xAxis, NumberAxis yAxis) {
-        // Eje X
         if (xAxis.lookup(".axis-label") != null)
             xAxis.lookup(".axis-label").setStyle("-fx-text-fill: white;");
         xAxis.lookupAll(".tick-label").forEach(t -> t.setStyle("-fx-text-fill: white;"));
 
-        // Eje Y
         if (yAxis.lookup(".axis-label") != null)
             yAxis.lookup(".axis-label").setStyle("-fx-text-fill: white;");
         yAxis.lookupAll(".tick-label").forEach(t -> t.setStyle("-fx-text-fill: white;"));
@@ -162,9 +165,10 @@ public class SignalAnalyzer extends VBox {
     private void configureTextField(TextField tf) {
         tf.setPrefWidth(80);
         tf.setStyle(
-            "-fx-background-color: rgba(255,255,255,0.9); " +
+            "-fx-background-color: #555555; " +
             "-fx-background-radius: 5; " +
             "-fx-border-radius: 5; " +
+            "-fx-text-fill: white; " +
             "-fx-padding: 3 5 3 5;"
         );
     }
@@ -201,13 +205,12 @@ public class SignalAnalyzer extends VBox {
                     break;
 
                 case "Cuadrada (Fourier)":
-                    int harmonics = 9; // valor por defecto
+                    int harmonics = 9; // default
                     try {
                         harmonics = Integer.parseInt(harmonicsField.getText());
                         if (harmonics < 1) harmonics = 1;
-                        if (harmonics % 2 == 0) harmonics--; // asegurar impar
+                        if (harmonics % 2 == 0) harmonics--; // ensure odd
                     } catch (NumberFormatException ex) {
-                        // si falla usar default
                     }
                     signal[i] = 0;
                     for (int n = 1; n <= harmonics; n += 2) {
@@ -228,7 +231,7 @@ public class SignalAnalyzer extends VBox {
 
                 case "Pulso":
                     double cycle = 1 / frequency;
-                    double duty = 0.1 * cycle; // 10% duty cycle
+                    double duty = 0.1 * cycle; // 10% duty
                     signal[i] = (t[i] % cycle) < duty ? amplitude : 0;
                     break;
 
@@ -246,7 +249,6 @@ public class SignalAnalyzer extends VBox {
             }
         }
 
-        // Graficar señal en el tiempo
         timeChart.getData().clear();
         XYChart.Series<Number, Number> timeSeries = new XYChart.Series<>();
         timeSeries.setName(selectedSignal);
@@ -255,7 +257,6 @@ public class SignalAnalyzer extends VBox {
         }
         timeChart.getData().add(timeSeries);
 
-        // Calcular y graficar FFT (magnitud)
         double[] fft = FourierUtils.computeFFT(signal);
 
         frequencyChart.getData().clear();
